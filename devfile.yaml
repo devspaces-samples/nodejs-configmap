@@ -1,0 +1,61 @@
+schemaVersion: 2.1.0
+metadata:
+  name: nodejs-configmap
+attributes:
+  che-theia.eclipse.org/sidecar-policy: mergeImage
+components:
+  - name: tools
+    container:
+      image: registry.redhat.io/codeready-workspaces/plugin-java8-rhel8
+      env:
+        - name: NODE_CONFIGMAP_PATH
+          value: /projects/nodejs-configmap/app-config.yml
+      memoryLimit: 3Gi
+      endpoints:
+        - exposure: public
+          name: nodejs-configmap
+          protocol: http
+          targetPort: 8080
+      volumeMounts:
+        - name: kube
+          path: /home/theia/.kube
+  - name: kube
+    volume:
+      size: 256Mi
+commands:
+  - id: install
+    exec:
+      label: Install dependencies
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/nodejs-configmap
+      commandLine: npm install
+      group:
+        kind: build
+  - id: run
+    exec:
+      label: Run application
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/nodejs-configmap
+      commandLine: node --inspect=9229 .
+      group:
+        kind: run
+  - id: deploy
+    exec:
+      label: Deploy application
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/nodejs-configmap
+      commandLine: npm run openshift
+      group:
+        kind: run
+  - id: deploy-info
+    exec:
+      label: Before deploy
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/nodejs-configmap
+      commandLine: |
+          echo
+          echo "Before you can deploy this application to an openshift cluster,"
+          echo "you must run 'oc login ...' in the nodejs terminal."
+          echo
+      group:
+        kind: run
