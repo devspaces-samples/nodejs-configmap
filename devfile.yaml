@@ -6,7 +6,7 @@ attributes:
 components:
   - name: tools
     container:
-      image: registry.redhat.io/codeready-workspaces/plugin-java8-rhel8
+      image: registry.redhat.io/devspaces/udi-rhel8:3.0
       env:
         - name: NODE_CONFIGMAP_PATH
           value: /projects/nodejs-configmap/app-config.yml
