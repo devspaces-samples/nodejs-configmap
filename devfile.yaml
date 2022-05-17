@@ -15,11 +15,11 @@ components:
           protocol: http
           targetPort: 8080
       volumeMounts:
-        - name: kube
-          path: /home/user/.kube
-  - name: kube
+        - name: npm
+          path: /home/user/.npm
+  - name: npm
     volume:
-      size: 256Mi
+      size: 512Mi
 commands:
   - id: 1-install
     exec:
