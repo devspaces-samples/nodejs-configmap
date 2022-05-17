@@ -1,8 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
   name: nodejs-configmap
-attributes:
-  che-theia.eclipse.org/sidecar-policy: mergeImage
 components:
   - name: tools
     container:
@@ -17,13 +15,13 @@ components:
           protocol: http
           targetPort: 8080
       volumeMounts:
-        - name: kube
-          path: /home/theia/.kube
-  - name: kube
+        - name: npm
+          path: /home/user/.npm
+  - name: npm
     volume:
-      size: 256Mi
+      size: 512Mi
 commands:
-  - id: install
+  - id: 1-install
     exec:
       label: Install dependencies
       component: tools
@@ -31,7 +29,7 @@ commands:
       commandLine: npm install
       group:
         kind: build
-  - id: run
+  - id: 2-run
     exec:
       label: Run application
       component: tools
@@ -39,7 +37,7 @@ commands:
       commandLine: node --inspect=9229 .
       group:
         kind: run
-  - id: deploy
+  - id: 3-deploy
     exec:
       label: Deploy application
       component: tools
@@ -47,7 +45,7 @@ commands:
       commandLine: npm run openshift
       group:
         kind: run
-  - id: deploy-info
+  - id: 4-deploy-info
     exec:
       label: Before deploy
       component: tools
@@ -55,7 +53,7 @@ commands:
       commandLine: |
           echo
           echo "Before you can deploy this application to an openshift cluster,"
-          echo "you must run 'oc login ...' in the nodejs terminal."
+          echo "you must run 'oc login ...' in the tools terminal."
           echo
       group:
         kind: run
