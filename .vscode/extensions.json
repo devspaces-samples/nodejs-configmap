@@ -4,6 +4,7 @@
   "recommendations": [
     "vscode.typescript-language-features",
     "ms-vscode.js-debug",
-    "redhat.vscode-openshift-connector"
+    "redhat.vscode-openshift-connector",
+    "redhat.fabric8-analytics"
   ]
 }
